@@ -1,4 +1,4 @@
-# Text to ASCII Art Generator
+# Text to ASCII Art Generator (TAAG)
 
 Este é um simples gerador de arte ASCII que transforma texto em arte ASCII usando a biblioteca Figlet. O site é construído usando React com Next.js e estilizado com o framework Tailwind CSS. Ele também apresenta um menu de contexto personalizado que fornece várias opções, incluindo a capacidade de fazer o download do texto gerado em diferentes formatos.
 
