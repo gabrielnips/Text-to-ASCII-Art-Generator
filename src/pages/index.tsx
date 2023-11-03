@@ -463,15 +463,14 @@ export default function Home() {
       event: e,
     });
   }
-
   function genTaag() {
-    figlet.text(text, { font }, (err: string, data: string) => {
-      if (err) {
-        console.error(err);
-      } else {
+    figlet.text(
+      text,
+      { font: font as figlet.Fonts },
+      function (err, data: any) {
         setAsciiArt(data);
       }
-    });
+    );
   }
 
   useEffect(() => {
