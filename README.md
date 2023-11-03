@@ -37,7 +37,7 @@ O site oferece a opção de fazer o download do texto gerado em diferentes forma
 Você pode experimentar o Text to ASCII Art Generator [aqui](URL_DO_SEU_SITE).
 
 ## Captura de Tela
-![Screenshot](https://raw.githubusercontent.com/gabrielnips/Text-to-ASCII-Art-Generator-TAAG-Website/main/screenshots/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/gabrielnips/Text-to-ASCII-Art-Generator-TAAG-Website/main/screenshots/image_1013.png)
 
 
 
