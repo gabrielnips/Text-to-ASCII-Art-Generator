@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -9,443 +10,12 @@ import {
   Submenu,
   useContextMenu,
 } from "react-contexify";
-
 import "react-contexify/dist/ReactContexify.css";
 
 import figlet from "figlet";
 import Head from "next/head";
 
-const fontOptions = [
-  "1Row",
-  "3-D",
-  "3D Diagonal",
-  "3D-ASCII",
-  "3d",
-  "3d_diagonal",
-  "3x5",
-  "4Max",
-  "5 Line Oblique",
-  "5lineoblique",
-  "646-ca",
-  "646-ca2",
-  "646-cn",
-  "646-cu",
-  "646-de",
-  "646-dk",
-  "646-es",
-  "646-es2",
-  "646-fr",
-  "646-gb",
-  "646-hu",
-  "646-irv",
-  "646-it",
-  "646-jp",
-  "646-kr",
-  "646-no",
-  "646-no2",
-  "646-pt",
-  "646-pt2",
-  "646-se",
-  "646-se2",
-  "646-yu",
-  "8859-2",
-  "8859-3",
-  "8859-4",
-  "8859-5",
-  "8859-7",
-  "8859-8",
-  "8859-9",
-  "AMC 3 Line",
-  "AMC 3 Liv1",
-  "AMC AAA01",
-  "AMC Neko",
-  "AMC Razor",
-  "AMC Razor2",
-  "AMC Slash",
-  "AMC Slider",
-  "AMC Thin",
-  "AMC Tubes",
-  "AMC Untitled",
-  "ANSI Regular",
-  "ANSI Shadow",
-  "ASCII New Roman",
-  "Acrobatic",
-  "Alligator",
-  "Alligator2",
-  "Alpha",
-  "Alphabet",
-  "Arrows",
-  "Avatar",
-  "B1FF",
-  "Banner",
-  "Banner3-D",
-  "Banner3",
-  "Banner4",
-  "Barbwire",
-  "Basic",
-  "Bear",
-  "Bell",
-  "Benjamin",
-  "Big Chief",
-  "Big Money-ne",
-  "Big Money-nw",
-  "Big Money-se",
-  "Big Money-sw",
-  "Big",
-  "Bigfig",
-  "Binary",
-  "Block",
-  "Blocks",
-  "Bloody",
-  "Bolger",
-  "Braced",
-  "Bright",
-  "Broadway KB",
-  "Broadway",
-  "Bubble",
-  "Bulbhead",
-  "Caligraphy",
-  "Caligraphy2",
-  "Calvin S",
-  "Cards",
-  "Catwalk",
-  "Chiseled",
-  "Chunky",
-  "Coinstak",
-  "Cola",
-  "Colossal",
-  "Computer",
-  "Contessa",
-  "Contrast",
-  "Cosmike",
-  "Crawford",
-  "Crawford2",
-  "Crazy",
-  "Cricket",
-  "Cursive",
-  "Cyberlarge",
-  "Cybermedium",
-  "Cybersmall",
-  "Cygnet",
-  "DANC4",
-  "DOS Rebel",
-  "DWhistled",
-  "Dancing Font",
-  "Decimal",
-  "Def Leppard",
-  "Delta Corps Priest 1",
-  "Diamond",
-  "Diet Cola",
-  "Digital",
-  "Doh",
-  "Doom",
-  "Dot Matrix",
-  "Double Shorts",
-  "Double",
-  "Dr Pepper",
-  "Efti Chess",
-  "Efti Font",
-  "Efti Italic",
-  "Efti Piti",
-  "Efti Robot",
-  "Efti Wall",
-  "Efti Water",
-  "Electronic",
-  "Elite",
-  "Epic",
-  "Fender",
-  "Filter",
-  "Fire Font-k",
-  "Fire Font-s",
-  "Flipped",
-  "Flower Power",
-  "Four Tops",
-  "Fraktur",
-  "Fun Face",
-  "Fun Faces",
-  "Fuzzy",
-  "Georgi16",
-  "Georgia11",
-  "Ghost",
-  "Ghoulish",
-  "Glenyn",
-  "Goofy",
-  "Gothic",
-  "Graceful",
-  "Gradient",
-  "Graffiti",
-  "Greek",
-  "Heart Left",
-  "Heart Right",
-  "Henry 3D",
-  "Hex",
-  "Hieroglyphs",
-  "Hollywood",
-  "Horizontal Left",
-  "Horizontal Right",
-  "ICL-1900",
-  "Impossible",
-  "Invita",
-  "Isometric1",
-  "Isometric2",
-  "Isometric3",
-  "Isometric4",
-  "Italic",
-  "Ivrit",
-  "JS Block Letters",
-  "JS Bracket Letters",
-  "JS Capital Curves",
-  "JS Cursive",
-  "JS Stick Letters",
-  "Jacky",
-  "Jazmine",
-  "Jerusalem",
-  "Katakana",
-  "Kban",
-  "Keyboard",
-  "Knob",
-  "Konto Slant",
-  "Konto",
-  "LCD",
-  "Larry 3D 2",
-  "Larry 3D",
-  "Lean",
-  "Letters",
-  "Lil Devil",
-  "Line Blocks",
-  "Linux",
-  "Lockergnome",
-  "Madrid",
-  "Marquee",
-  "Maxfour",
-  "Merlin1",
-  "Merlin2",
-  "Mike",
-  "Mini",
-  "Mirror",
-  "Mnemonic",
-  "Modular",
-  "Morse",
-  "Morse2",
-  "Moscow",
-  "Mshebrew210",
-  "Muzzle",
-  "NScript",
-  "NT Greek",
-  "NV Script",
-  "Nancyj-Fancy",
-  "Nancyj-Improved",
-  "Nancyj-Underlined",
-  "Nancyj",
-  "Nipples",
-  "O8",
-  "OS2",
-  "Octal",
-  "Ogre",
-  "Old Banner",
-  "Patorjk's Cheese",
-  "Patorjk-HeX",
-  "Pawp",
-  "Peaks Slant",
-  "Peaks",
-  "Pebbles",
-  "Pepper",
-  "Poison",
-  "Puffy",
-  "Puzzle",
-  "Pyramid",
-  "Rammstein",
-  "Rectangles",
-  "Red Phoenix",
-  "Relief",
-  "Relief2",
-  "Reverse",
-  "Roman",
-  "Rot13",
-  "Rotated",
-  "Rounded",
-  "Rowan Cap",
-  "Rozzo",
-  "Runic",
-  "Runyc",
-  "S Blood",
-  "SL Script",
-  "Santa Clara",
-  "Script",
-  "Serifcap",
-  "Shadow",
-  "Shimrod",
-  "Short",
-  "Slant Relief",
-  "Slant",
-  "Slide",
-  "Small Caps",
-  "Small Isometric1",
-  "Small Keyboard",
-  "Small Poison",
-  "Small Script",
-  "Small Shadow",
-  "Small Slant",
-  "Small Tengwar",
-  "Small",
-  "Soft",
-  "Speed",
-  "Spliff",
-  "Stacey",
-  "Stampate",
-  "Stampatello",
-  "Standard",
-  "Star Strips",
-  "Star Wars",
-  "Stellar",
-  "Stforek",
-  "Stick Letters",
-  "Stop",
-  "Straight",
-  "Stronger Than All",
-  "Sub-Zero",
-  "Swamp Land",
-  "Swan",
-  "Sweet",
-  "THIS",
-  "Tanja",
-  "Tengwar",
-  "Term",
-  "Test1",
-  "The Edge",
-  "Thick",
-  "Thin",
-  "Thorned",
-  "Three Point",
-  "Ticks Slant",
-  "Ticks",
-  "Tiles",
-  "Tinker-Toy",
-  "Tombstone",
-  "Train",
-  "Trek",
-  "Tsalagi",
-  "Tubular",
-  "Twisted",
-  "Two Point",
-  "USA Flag",
-  "Univers",
-  "Varsity",
-  "Wavy",
-  "Weird",
-  "Wet Letter",
-  "Whimsy",
-  "Wow",
-  "alligator3",
-  "amc3line",
-  "amc3liv1",
-  "amcaaa01",
-  "amcneko",
-  "amcrazo2",
-  "amcrazor",
-  "amcslash",
-  "amcslder",
-  "amcthin",
-  "amctubes",
-  "amcun1",
-  "ascii12",
-  "ascii9",
-  "ascii_new_roman",
-  "bigascii12",
-  "bigascii9",
-  "bigchief",
-  "bigmono12",
-  "bigmono9",
-  "broadway_kb",
-  "calgphy2",
-  "circle",
-  "cosmic",
-  "dancingfont",
-  "defleppard",
-  "dietcola",
-  "dosrebel",
-  "dotmatrix",
-  "doubleshorts",
-  "drpepper",
-  "eftichess",
-  "eftifont",
-  "eftipiti",
-  "eftirobot",
-  "eftitalic",
-  "eftiwall",
-  "eftiwater",
-  "emboss",
-  "emboss2",
-  "fire_font-k",
-  "fire_font-s",
-  "flowerpower",
-  "fourtops",
-  "frango",
-  "funface",
-  "funfaces",
-  "future",
-  "halfiwi",
-  "heart_left",
-  "heart_right",
-  "henry3d",
-  "horizontalleft",
-  "horizontalright",
-  "hz",
-  "ilhebrew",
-  "jis0201",
-  "koi8r",
-  "kontoslant",
-  "larry3d",
-  "letter",
-  "lildevil",
-  "lineblocks",
-  "maxiwi",
-  "miniwi",
-  "mono12",
-  "mono9",
-  "moscow",
-  "ntgreek",
-  "oldbanner",
-  "pagga",
-  "peaksslant",
-  "rebel",
-  "red_phoenix",
-  "rev",
-  "rowancap",
-  "rusto",
-  "rustofat",
-  "s-relief",
-  "santaclara",
-  "sblood",
-  "slscript",
-  "smallcaps",
-  "smascii12",
-  "smascii9",
-  "smblock",
-  "smbraille",
-  "smisome1",
-  "smkeyboard",
-  "smmono12",
-  "smmono9",
-  "smpoison",
-  "smscript",
-  "smshadow",
-  "smslant",
-  "smtengwar",
-  "starstrips",
-  "starwars",
-  "swampland",
-  "threepoint",
-  "ticksslant",
-  "twopoint",
-  "upper",
-  "usaflag",
-  "ushebrew",
-  "uskata",
-  "utf8",
-  "wetletter",
-  "wideterm",
-];
+import { fontOptions } from "../others/fontOptions";
 
 export default function Home() {
   const MENU_ID = "menu-id";
@@ -454,6 +24,33 @@ export default function Home() {
   const [font, setFont] = useState("Big");
   const [text, setText] = useState("Test");
 
+  useEffect(() => {
+    // Função para extrair parâmetros da URL
+    const parseHashParams = () => {
+      const hash = window.location.hash.substring(1); // Remove o '#' do início
+      const params = new URLSearchParams(hash);
+      const paramFont = params.get("f"); // 'f' para a fonte
+      const paramText = params.get("t"); // 't' para o texto
+
+      if (paramFont && fontOptions.includes(paramFont)) {
+        setFont(paramFont);
+      }
+      if (paramText) {
+        setText(paramText);
+      }
+    };
+
+    // Chama a função na inicialização
+    parseHashParams();
+
+    // Listener para alterações na URL
+    window.addEventListener("hashchange", parseHashParams);
+
+    // Remove o listener na desmontagem
+    return () => {
+      window.removeEventListener("hashchange", parseHashParams);
+    };
+  }, []);
   /**
    * Displays the context menu.
    * @param {Event} e - The event object.
@@ -491,7 +88,22 @@ export default function Home() {
   function PageCopyResult() {
     navigator.clipboard.writeText(asciiArt);
   }
+  function shareCurrentState() {
+    const currentUrl = window.location.origin + window.location.pathname;
+    const hashParams = `#p=display&f=${encodeURIComponent(
+      font
+    )}&t=${encodeURIComponent(text)}`;
+    const shareableUrl = currentUrl + hashParams;
 
+    navigator.clipboard
+      .writeText(shareableUrl)
+      .then(() => {
+        alert("URL copiada para a área de transferência!");
+      })
+      .catch((err) => {
+        console.error("Erro ao copiar URL:", err);
+      });
+  }
   function PageDownloadResult(
     opening: string,
     closing: string,
@@ -525,6 +137,7 @@ export default function Home() {
     >
       <Head>
         <title>Text to ASCII Art Generator (TAAG)</title>
+        <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
         <meta
           property="og:title"
           content="Text to ASCII Art Generator (TAAG)"
@@ -574,6 +187,41 @@ export default function Home() {
         </div>
       </form>
       <div
+        className="fixed bottom-4 left-4 z-50 rounded-2xl border-2 p-4 border-solid border-stone-700 shareButton cursor-pointer"
+        onClick={shareCurrentState}
+      >
+        <svg
+          fill="#555555"
+          width="40"
+          height="40"
+          viewBox="0 0 486.465 486.465"
+        >
+          <g>
+            <g>
+              <path
+                d="M453.323,39.655l-16.564-14.656C418.729,9.021,395.521,0.22,371.405,0.22c-28.223,0-55.118,12.079-73.791,33.143
+        L250.207,86.86c-6.105,6.876-9.164,15.722-8.608,24.901c0.557,9.166,4.642,17.576,11.518,23.673l4.438,3.94
+        c6.299,5.594,14.416,8.673,22.842,8.673l2.054-0.059c9.166-0.551,17.582-4.637,23.699-11.523l47.418-53.503
+        c8.342-9.416,24.169-10.362,33.601-2.026l16.558,14.688c4.748,4.203,7.57,10.021,7.955,16.384
+        c0.386,6.358-1.722,12.465-5.937,17.208L302.042,246.198c-6.982,7.887-19.377,10.164-28.734,5.342
+        c-14.577-7.519-33.58-3.93-44.392,8.256l-0.813,0.926c-7.573,8.518-10.727,19.838-8.674,31.104
+        c2.074,11.198,9.047,20.801,19.153,26.09c13.986,7.311,29.763,11.33,45.621,11.33h0.012c28.21,0,55.117-12.238,73.8-33.308
+        l103.691-117.046C497.746,138.226,494.004,75.731,453.323,39.655z"
+              />
+              <path
+                d="M228.873,347.458c-13.669-12.103-36.426-10.743-48.574,2.938l-47.396,53.487c-8.342,9.412-24.159,10.387-33.58,2.043
+        l-16.576-14.705c-4.747-4.207-7.57-10.025-7.955-16.383c-0.387-6.348,1.722-12.453,5.935-17.196l103.692-116.974
+        c6.876-7.765,19.047-10.111,28.297-5.566c15.121,7.448,34.359,3.818,46.05-9.416c7.433-8.374,10.555-19.496,8.586-30.463
+        c-1.956-11.031-8.747-20.389-18.618-25.666c-14.201-7.604-30.274-11.624-46.466-11.624c-28.223,0-55.118,12.084-73.791,33.151
+        L24.772,308.038c-36.062,40.666-32.308,103.082,8.361,139.143l16.564,14.482c18.021,15.979,41.229,24.582,65.345,24.582
+        c0.011,0,0,0,0.011,0c28.223,0,55.129-11.889,73.812-32.957l47.388-53.379c6.116-6.887,9.176-15.691,8.618-24.819
+        c-0.533-9.068-4.736-17.694-11.538-23.706L228.873,347.458z"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div
         className="fixed bottom-4 right-4 z-50 rounded-2xl border-2 border-solid border-stone-700 githubButton cursor-pointer"
         onClick={() => handleRedirect("https://github.com/gabrielnips")}
       >
@@ -605,6 +253,7 @@ export default function Home() {
         <Item onClick={PageAdvance}>Advance</Item>
         <Item onClick={PageReload}>Reload</Item>
         <Separator />
+        <Item onClick={shareCurrentState}>Copy Link Shareable</Item>
         <Item onClick={PageCopyResult}>Copy Result</Item>
         <Submenu label="Download Result">
           <Item disabled>Logs</Item>

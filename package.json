@@ -1,6 +1,12 @@
 {
-  "name": "taag",
-  "version": "0.1.0",
+  "name": "Text to ASCII Art Generator",
+  "version": "0.1.2",
+  "author": "https://github.com/gabrielnips",
+  "description": "Este é um simples gerador de arte ASCII que transforma texto em arte ASCII usando a biblioteca Figlet. O site é construído usando React com Next.js e estilizado com o framework Tailwind CSS. Ele também apresenta um menu de contexto personalizado que fornece várias opções, incluindo a capacidade de fazer o download do texto gerado em diferentes formatos.",
+  "bugs": {
+    "url": "https://github.com/gabrielnips/Text-to-ASCII-Art-Generator/issues"
+  },
+  "homepage": "https://github.com/gabrielnips/Text-to-ASCII-Art-Generator",
   "private": true,
   "scripts": {
     "dev": "next dev",
