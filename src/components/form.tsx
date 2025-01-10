@@ -11,7 +11,7 @@ export function Form({
   return (
     <form
       className={`bg-stone-900 w-screen flex flex-col py-24 px-20 gap-3 rounded-lg
-      border border-stone-700 shadow-2xl`}
+      border border-stone-700 shadow-2xl  mobile:border-none mobile:shadow-none mobile:px-5 `}
     >
       <a className={`text-stone-400 text-base text-center`}>
         Text to ASCII Art Generator
