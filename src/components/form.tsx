@@ -1,4 +1,5 @@
 import React from "react";
+
 export function Form({
   text,
   setText,
@@ -9,7 +10,7 @@ export function Form({
 }: any) {
   return (
     <form
-      className={`bg-stone-900 w-screen flex flex-col py-32 px-20 gap-3 rounded-lg
+      className={`bg-stone-900 w-screen flex flex-col py-24 px-20 gap-3 rounded-lg
       border border-stone-700 shadow-2xl`}
     >
       <a className={`text-stone-400 text-base text-center`}>

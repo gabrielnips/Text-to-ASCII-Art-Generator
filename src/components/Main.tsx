@@ -14,7 +14,7 @@ export default function Main({
   return (
     <main
       onContextMenu={onContextMenu}
-      className={`h-screen flex items-center justify-center px-96 select-none ${inter.className}`}
+      className={`h-screen flex items-center justify-center px-64 2xl:px-96 xl:px-96 lg:px-64 md:px-52 sm:px-24  select-none ${inter.className}`}
     >
       <Head>
         <title>Text to ASCII Art Generator (TAAG)</title>
