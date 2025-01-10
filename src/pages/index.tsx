@@ -1,37 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useAsciiContext } from "../context/AsciiContext";
+import { fontOptions } from "../config/fontOptions";
+import Main from "../components/Main";
+import { Form } from "../components/form";
+import { ContextMenu } from "../components/contextMenu";
 
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
-
-import {
-  Menu,
-  Item,
-  Separator,
-  Submenu,
-  useContextMenu,
-} from "react-contexify";
-import "react-contexify/dist/ReactContexify.css";
-
-import figlet from "figlet";
-import Head from "next/head";
-
-import { fontOptions } from "../others/fontOptions";
+import { useContextMenu } from "react-contexify";
 
 export default function Home() {
   const MENU_ID = "menu-id";
   const { show } = useContextMenu({ id: MENU_ID });
-  const [asciiArt, setAsciiArt] = useState("");
-  const [font, setFont] = useState("Big");
-  const [text, setText] = useState("Test");
+  const { font, setFont, text, setText, asciiArt, shareCurrentState } =
+    useAsciiContext();
 
   useEffect(() => {
-    // Função para extrair parâmetros da URL
     const parseHashParams = () => {
-      const hash = window.location.hash.substring(1); // Remove o '#' do início
+      const hash = window.location.hash.substring(1);
       const params = new URLSearchParams(hash);
-      const paramFont = params.get("f"); // 'f' para a fonte
-      const paramText = params.get("t"); // 't' para o texto
-
+      const paramFont = params.get("f");
+      const paramText = params.get("t");
       if (paramFont && fontOptions.includes(paramFont)) {
         setFont(paramFont);
       }
@@ -39,153 +26,81 @@ export default function Home() {
         setText(paramText);
       }
     };
-
-    // Chama a função na inicialização
     parseHashParams();
-
-    // Listener para alterações na URL
     window.addEventListener("hashchange", parseHashParams);
-
-    // Remove o listener na desmontagem
     return () => {
       window.removeEventListener("hashchange", parseHashParams);
     };
   }, []);
-  /**
-   * Displays the context menu.
-   * @param {Event} e - The event object.
-   */
+
   function displayMenu(e: React.MouseEvent) {
     show({
       event: e,
     });
   }
-  function genTaag() {
-    figlet.text(
-      text,
-      { font: font as figlet.Fonts },
-      function (err, data: any) {
-        setAsciiArt(data);
-      }
-    );
-  }
 
-  useEffect(() => {
-    genTaag();
-  }, [text, font]);
+  const handleMenuClick = (action: string) => {
+    switch (action) {
+      case "return":
+        window.history.back();
+        break;
+      case "advance":
+        window.history.forward();
+        break;
+      case "reload":
+        location.reload();
+        break;
+      case "copyresult":
+        navigator.clipboard.writeText(asciiArt);
+        break;
+      default:
+        break;
+    }
+  };
 
-  function PageAdvance() {
-    window.history.forward();
-  }
-
-  function PageReturn() {
-    window.history.back();
-  }
-
-  function PageReload() {
-    location.reload();
-  }
-  function PageCopyResult() {
-    navigator.clipboard.writeText(asciiArt);
-  }
-  function shareCurrentState() {
-    const currentUrl = window.location.origin + window.location.pathname;
-    const hashParams = `#p=display&f=${encodeURIComponent(
-      font
-    )}&t=${encodeURIComponent(text)}`;
-    const shareableUrl = currentUrl + hashParams;
-
-    navigator.clipboard
-      .writeText(shareableUrl)
-      .then(() => {
-        alert("URL copiada para a área de transferência!");
-      })
-      .catch((err) => {
-        console.error("Erro ao copiar URL:", err);
-      });
-  }
-  function PageDownloadResult(
+  const PageDownloadResult = (
     opening: string,
     closing: string,
     extension: string
-  ) {
+  ) => {
     const content = `${opening}\n${asciiArt}\n${closing}`;
     downloadFile(content, `ascii.${extension}`);
-  }
+  };
 
-  function PageDownloadLog(logContent: string, fileName: string) {
+  const PageDownloadLog = (logContent: string, fileName: string) => {
     downloadFile(logContent, fileName);
-  }
+  };
 
-  function downloadFile(content: string, name: string) {
-    const fileData = content;
-    const blob = new Blob([fileData], { type: "text/plain" });
+  const downloadFile = (content: string, name: string) => {
+    const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.download = name;
     link.href = url;
     link.click();
-  }
+  };
 
   const handleRedirect = (url: string) => {
     window.location.href = url;
   };
   return (
-    <main
-      onContextMenu={displayMenu}
-      className={`h-screen flex items-center justify-center px-96 select-none ${inter.className}`}
-    >
-      <Head>
-        <title>Text to ASCII Art Generator (TAAG)</title>
-        <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
-        <meta
-          property="og:title"
-          content="Text to ASCII Art Generator (TAAG)"
-          key="title"
-        />
-      </Head>
-      <form
-        className={`bg-stone-900 w-screen flex flex-col py-32 px-20 gap-3 rounded-lg
-        border border-stone-700 shadow-2xl`}
-      >
-        <a className={`text-stone-400 text-base text-center`}>
-          Text to ASCII Art Generator
-        </a>
-        <div className="flex-col flex">
-          <a className={`text-stone-400 text-sm`}>Text:</a>
-          <textarea
-            name="text"
-            rows={4}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className={`bg-stone-900 shadow-lg border-stone-600 border rounded-lg outline-none placeholder:text-stone-600 text-stone-400 text-sm py-2 px-3`}
-            placeholder="Bla bla bla bla"
-          ></textarea>
-        </div>
-        <div className="flex-col flex">
-          <a className={`text-stone-400 text-sm`}>Font:</a>
-          <select
-            name="font"
-            value={font}
-            onChange={(e) => setFont(e.target.value)}
-            className={`bg-stone-900 shadow-lg border-stone-700 border rounded-lg outline-none text-stone-400 text-sm py-2 px-3`}
-          >
-            {fontOptions.map((font, index) => (
-              <option key={index} value={font}>
-                {font}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex-col flex">
-          <a className={`text-stone-400 text-sm`}>Result:</a>
-          <pre
-            className={`bg-stone-900 shadow-lg resize-none overflow-hidden border-stone-600 border rounded-lg outline-none placeholder:text-stone-600 text-stone-400 text-sm py-2 px-3`}
-          >
-            {asciiArt}
-          </pre>
-        </div>
-      </form>
+    <Main onContextMenu={displayMenu}>
+      <Form
+        text={text}
+        setText={setText}
+        font={font}
+        setFont={setFont}
+        fontOptions={fontOptions}
+        asciiArt={asciiArt}
+      />
+      <ContextMenu
+        MENU_ID={MENU_ID}
+        handleMenuClick={handleMenuClick}
+        shareCurrentState={shareCurrentState}
+        asciiArt={asciiArt}
+        PageDownloadResult={PageDownloadResult}
+        PageDownloadLog={PageDownloadLog}
+      />
       <div
         className="fixed bottom-4 left-4 z-50 rounded-2xl border-2 p-4 border-solid border-stone-700 shareButton cursor-pointer"
         onClick={shareCurrentState}
@@ -244,89 +159,6 @@ export default function Home() {
           </g>
         </svg>
       </div>
-      <Menu
-        id={MENU_ID}
-        className={`bg-stone-900 shadow-lg border-stone-600 border rounded-lg outline-none placeholder:text-stone-600 text-stone-400 text-sm py-2 px-3`}
-        animation="scale"
-      >
-        <Item onClick={PageReturn}>Return</Item>
-        <Item onClick={PageAdvance}>Advance</Item>
-        <Item onClick={PageReload}>Reload</Item>
-        <Separator />
-        <Item onClick={shareCurrentState}>Copy Link Shareable</Item>
-        <Item onClick={PageCopyResult}>Copy Result</Item>
-        <Submenu label="Download Result">
-          <Item disabled>Logs</Item>
-
-          <Item onClick={() => PageDownloadResult("/*", "*/", "js")}>
-            JS Log
-          </Item>
-          <Item onClick={() => PageDownloadResult("'''", "'''", "py")}>
-            Python Log
-          </Item>
-          <Item onClick={() => PageDownloadResult("/*", "*/", "cs")}>
-            C# Log
-          </Item>
-          <Item onClick={() => PageDownloadResult("/*", "*/", "css")}>
-            CSS Log
-          </Item>
-          <Item onClick={() => PageDownloadResult("<!--", "-->", "html")}>
-            HTML Log
-          </Item>
-          <Item onClick={() => PageDownloadResult("<!--", "-->", "xml")}>
-            XML Log
-          </Item>
-
-          <Item disabled>Comments</Item>
-
-          <Item
-            onClick={() =>
-              PageDownloadLog(
-                `console.log("${asciiArt}");`,
-                "javascript-log.js"
-              )
-            }
-          >
-            JS Comment
-          </Item>
-          <Item
-            onClick={() =>
-              PageDownloadLog(`print("${asciiArt}")`, "python-log.py")
-            }
-          >
-            Python Comment
-          </Item>
-          <Item
-            onClick={() =>
-              PageDownloadLog(
-                `Console.WriteLine("${asciiArt}");`,
-                "csharp-log.cs"
-              )
-            }
-          >
-            C# Comment
-          </Item>
-          <Item
-            onClick={() => PageDownloadLog(`/* ${asciiArt} */`, "css-log.css")}
-          >
-            CSS Comment
-          </Item>
-          <Item
-            onClick={() =>
-              PageDownloadLog(`<!-- ${asciiArt} -->`, "html-log.html")
-            }
-          >
-            HTML Comment
-          </Item>
-          <Item
-            onClick={() =>
-              PageDownloadLog(`<!-- ${asciiArt} -->`, "xml-log.xml")
-            }
-          >
-            XML Comment
-          </Item>
-        </Submenu>
-      </Menu>
-    </main>
+    </Main>
   );
 }

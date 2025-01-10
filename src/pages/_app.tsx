@@ -1,6 +1,11 @@
-import "@/styles/globals.css";
+import "./globals.css";
+import { AsciiProvider } from "../context/AsciiContext";
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <AsciiProvider>
+      <Component {...pageProps} />
+    </AsciiProvider>
+  );
 }
